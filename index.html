@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Bảng Sản Phẩm Tồn Tập Đoàn</title>
+    <title>BÁO CÁO SẢN PHẨM TỒN - KIM OANH GROUP</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -404,109 +404,40 @@
 </head>
 <body>
     <div class="particles" id="particles"></div>
-
     <div class="container">
         <header class="animate-in">
-            <h1>🏢 Dashboard - Bảng Sản Phẩm Tồn</h1>
+            <h1>BÁO CÁO SẢN PHẨM TỒN</h1>
             <p>KIM OANH GROUP | Ngày cập nhật: 28/02/2025</p>
         </header>
-
-        <!-- KPI Cards -->
-        <div class="kpi-grid">
-            <div class="kpi-card glass animate-in">
-                <div class="kpi-icon">🏗️</div>
-                <div class="kpi-value">23</div>
-                <div class="kpi-label">Tổng Dự Án</div>
-                <div class="kpi-trend trend-up">
-                    📈 100% hoạt động
-                </div>
-            </div>
-            <div class="kpi-card glass animate-in">
-                <div class="kpi-icon">📦</div>
-                <div class="kpi-value">17,060</div>
-                <div class="kpi-label">Tổng Sản Phẩm</div>
-                <div class="kpi-trend trend-up">
-                    📊 94.5% đã bán
-                </div>
-            </div>
-            <div class="kpi-card glass animate-in">
-                <div class="kpi-icon">✅</div>
-                <div class="kpi-value">16,127</div>
-                <div class="kpi-label">Đã Bán</div>
-                <div class="kpi-trend trend-up">
-                    🎯 Tỷ lệ 94.5%
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 94.5%"></div>
-                </div>
-            </div>
-            <div class="kpi-card glass animate-in">
-                <div class="kpi-icon">📊</div>
-                <div class="kpi-value">933</div>
-                <div class="kpi-label">Tồn Kho</div>
-                <div class="kpi-trend trend-down">
-                    ⚠ 5.5% tồn kho
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 5.5%"></div>
-                </div>
-            </div>
-            <div class="kpi-card glass animate-in">
-                <div class="kpi-icon">💰</div>
-                <div class="kpi-value">1,179</div>
-                <div class="kpi-label">Tổng Giá Trị (Tỷ VNĐ)</div>
-                <div class="kpi-trend trend-up">
-                    📈 Tăng trưởng
-                </div>
-            </div>
-        </div>
-
-        <!-- Charts -->
+        <div class="kpi-grid" id="kpiSection"></div>
         <div class="chart-grid">
             <div class="chart-card glass animate-in">
                 <h3>📊 Phân Bố Theo Vùng Miền</h3>
                 <canvas id="regionChart"></canvas>
             </div>
             <div class="chart-card glass animate-in">
-                <h3>📈 Top 10 Dự Án Tồn Kho Nhiều Nhất</h3>
+                <h3>📈 Top Dự Án Tồn Kho</h3>
                 <canvas id="topProjectsChart"></canvas>
             </div>
         </div>
-
-        <!-- Data Table -->
         <div class="table-card glass animate-in">
             <h3>📋 Chi Tiết Các Dự Án</h3>
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
-                            <th>STT</th>
-                            <th>Dự Án</th>
-                            <th>Vùng</th>
-                            <th>Tổng SP</th>
-                            <th>Đã Bán</th>
-                            <th>Tồn Kho</th>
-                            <th>Tỷ lệ bán</th>
-                            <th>Giá Trị Tồn</th>
-                            <th>Trạng Thái</th>
-                            <th>Ghi Chú</th>
+                            <th>STT</th><th>Dự Án</th><th>Vùng</th>
+                            <th>Tổng SP</th><th>Đã Bán</th><th>Tồn Kho</th>
+                            <th>Tỷ lệ bán</th><th>Giá Trị Tồn</th>
+                            <th>Trạng Thái</th><th>Ghi Chú</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody">
-                        <!-- Data will be inserted here -->
-                    </tbody>
+                    <tbody id="tableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
-
-    <footer class="animate-in">
-        <p>Dashboard được tạo bởi AI Assistant cho Quốc Sư | Ngày cập nhật: 28/02/2025</p>
-        <p style="margin-top: 8px;">
-            <a href="https://github.com/hoangnvkog/inventory-dashboard-2025" target="_blank">GitHub Repository</a>
-        </p>
-    </footer>
-
+    <footer class="animate-in">Dashboard KIM OANH GROUP | 2025</footer>
     <script>
         // Generate particles
         const particlesContainer = document.getElementById('particles');
@@ -519,371 +450,127 @@
             particlesContainer.appendChild(particle);
         }
 
-        // Demo data for the table
-        const projectData = [
-    {
-        name: "TAM PHƯỚC - ĐỒNG NAI (GOLDEN CENTER CITY 3)",
-        region: "TP.HCM",
-        total: 815,
-        sold: 488,
-        inventory: 327,
-        value: 244355416000.0,
-        status: "warning",
-        note: "- Tiếp tục thanh lý, khóa sản phẩm và không triển khai kinh doanh (Pháp lý dự án)"
-    },
-    {
-        name: "PHÚ HỘI - ĐỒNG NAI (MEGA CITY 2)",
-        region: "TP.HCM",
-        total: 3160,
-        sold: 3036,
-        inventory: 124,
-        value: 137530021957.0,
-        status: "warning",
-        note: "- Tiếp tục thanh lý, khóa và không triển khai kinh doanh sản phẩm thuộc trục đường QH (SP vướng) - ("
-    },
-    {
-        name: "BỬU HÒA - ĐỒNG NAI (BIEN HOA NEWTOWN 2)",
-        region: "TP.HCM",
-        total: 167,
-        sold: 157,
-        inventory: 10,
-        value: 44275846614.6875,
-        status: "success",
-        note: "- Đang triển khai kinh doanh SẢN PHẨM BÌNH THƯỜNG"
-    },
-    {
-        name: "PHƯỚC TÂN - ĐỒNG NAI (PARADISE RIVERSIDE)",
-        region: "TP.HCM",
-        total: 555,
-        sold: 449,
-        inventory: 106,
-        value: 105562100000.0,
-        status: "warning",
-        note: "- Tiếp tục thanh lý và khóa sản phẩm thuộc 120 nền
-- SẢN PHẨM BÌNH THƯỜNG còn lại để DVKH xử lý hoán"
-    },
-    {
-        name: "HÓA AN - ĐỒNG NAI (BIEN HOA NEWTOWN 1)",
-        region: "TP.HCM",
-        total: 222,
-        sold: 221,
-        inventory: 1,
-        value: 950000000.0,
-        status: "warning",
-        note: "- Khóa: sp vướng và không triển khai kinh doanh"
-    },
-    {
-        name: "TÂN HẠNH - ĐỒNG NAI (BIEN HOA RIVER SIDE)",
-        region: "TP.HCM",
-        total: 275,
-        sold: 258,
-        inventory: 17,
-        value: 12688112000.0,
-        status: "warning",
-        note: "- Tiếp tục khóa sản phẩm và không triển khai kinh doanh"
-    },
-    {
-        name: "KĐT BÀU XÉO - ĐỒNG NAI",
-        region: "Đồng Nai",
-        total: 145,
-        sold: 137,
-        inventory: 8,
-        value: 31114499200.0,
-        status: "success",
-        note: "- Đang triển khai kinh doanh SẢN PHẨM BÌNH THƯỜNG"
-    },
-    {
-        name: "SIÊU THỊ TRẢNG BOM",
-        region: "TP.HCM",
-        total: 224,
-        sold: 223,
-        inventory: 1,
-        value: 7500000000.309999,
-        status: "success",
-        note: "- Giao sàn ĐN triển khai sản phẩm bình thường"
-    },
-    {
-        name: "KDC KIM OANH - ĐỒNG NAI (CENTURY CITY)",
-        region: "Đồng Nai",
-        total: 2128,
-        sold: 2052,
-        inventory: 76,
-        value: 221283348331.635,
-        status: "success",
-        note: "- Đang triển khai kinh doanh SẢN PHẨM BÌNH THƯỜNG
-- 13 sản phẩm vay cá nhân"
-    },
-    {
-        name: "MP4A - BÌNH DƯƠNG (GOLDEN CENTER CITY 1)",
-        region: "TP.HCM",
-        total: 691,
-        sold: 664,
-        inventory: 27,
-        value: 23064735000.0,
-        status: "warning",
-        note: "- Tiếp tục thanh lý và khóa sản phẩm thuộc ds 35 sản phẩm chưa ra sổ"
-    },
-    {
-        name: "MP4B - BÌNH DƯƠNG (GOLDEN CENTER CITY 2)",
-        region: "TP.HCM",
-        total: 1123,
-        sold: 1082,
-        inventory: 136,
-        value: 112717392000.0,
-        status: "warning",
-        note: "- Tiếp tục thanh lý, khóa sản phẩm và không triển khai kinh doanh
-- Cho môi giới sản phẩm bình thườn"
-    },
-    {
-        name: "NHÀ Ở XÃ HỘI CẦU ĐÒ (RICH HOME 3)",
-        region: "TP.HCM",
-        total: 276,
-        sold: 271,
-        inventory: 5,
-        value: 7662026000.0,
-        status: "warning",
-        note: "- Đang triển khai kinh doanh SẢN PHẨM BÌNH THƯỜNG
-- 04 Sản phẩm vướng đất lúa"
-    },
-    {
-        name: "AN ĐIỀN - BÌNH DƯƠNG (BEN CAT CENTER CITY 2)",
-        region: "TP.HCM",
-        total: 413,
-        sold: 413,
-        inventory: 0,
-        value: 0.0,
-        status: "danger",
-        note: "- Ngưng môi giới sản phẩm - Ra sổ"
-    },
-    {
-        name: "CẦU ĐÒ -BÌNH DƯƠNG (MEGA CITY 1)",
-        region: "TP.HCM",
-        total: 2023,
-        sold: 2011,
-        inventory: 12,
-        value: 24020430000.0,
-        status: "success",
-        note: "- Đang triển khai kinh doanh sản phẩm trên rổ hàng
-- Cho môi giới sản phẩm bình thường"
-    },
-    {
-        name: "METRO TOWER - BÌNH DƯƠNG (THE EAST GATE)",
-        region: "TP.HCM",
-        total: 712,
-        sold: 709,
-        inventory: 3,
-        value: 6292558774.7,
-        status: "warning",
-        note: "- Đang triển khai kinh doanh sản phẩm bình thường (đã ra sổ cá nhân)
-- Khóa căn đang vay và đang cho"
-    },
-    {
-        name: "CĂN HỘ THUẬN GIAO LEGACY - BÌNH DƯƠNG",
-        region: "Bình Dương",
-        total: 940,
-        sold: 935,
-        inventory: 5,
-        value: 9065458600.0,
-        status: "warning",
-        note: "- Sp khóa CLKD - sản phẩm TMDV - sản phẩm BTTT"
-    },
-    {
-        name: "GOLDEN FUTURE - BÌNH DƯƠNG (Trung Quân)",
-        region: "Bình Dương",
-        total: 509,
-        sold: 504,
-        inventory: 5,
-        value: 5358190000.0,
-        status: "success",
-        note: "- Đang triển khai kinh doanh SẢN PHẨM BÌNH THƯỜNG"
-    },
-    {
-        name: "ROYAL TOWN - BÌNH DƯƠNG",
-        region: "Bình Dương",
-        total: 22,
-        sold: 22,
-        inventory: 0,
-        value: 0.0,
-        status: "success",
-        note: "- Đang triển khai kinh doanh SẢN PHẨM BÌNH THƯỜNG"
-    },
-    {
-        name: "NEWLAND - BÌNH DƯƠNG",
-        region: "Bình Dương",
-        total: 254,
-        sold: 251,
-        inventory: 3,
-        value: 4570500000.0,
-        status: "success",
-        note: "- Đang triển khai kinh doanh SẢN PHẨM BÌNH THƯỜNG"
-    },
-    {
-        name: "TRƯỜNG LƯU QUẬN 9 - TP.HCM (SINGA CITY)",
-        region: "TP.HCM",
-        total: 431,
-        sold: 425,
-        inventory: 6,
-        value: 10572440000.0,
-        status: "danger",
-        note: "- Ngưng môi giới sản phẩm"
-    },
-    {
-        name: "RICHLAND RESIDENCE (THUẬN LỢI 2)",
-        region: "TP.HCM",
-        total: 748,
-        sold: 694,
-        inventory: 54,
-        value: 153525935517.5541,
-        status: "success",
-        note: "- Đang triển khai kinh doanh SẢN PHẨM BÌNH THƯỜNG"
-    },
-    {
-        name: "NHÀ Ở H2 - MP3",
-        region: "TP.HCM",
-        total: 8,
-        sold: 8,
-        inventory: 0,
-        value: 0.0,
-        status: "success",
-        note: "- Đang triển KD (môi giới lại cho NGUYỄN THỊ NHUNG)"
-    },
-    {
-        name: "HÒA LỢI 69 NỀN",
-        region: "TP.HCM",
-        total: 8,
-        sold: 8,
-        inventory: 0,
-        value: 0.0,
-        status: "success",
-        note: "- Đang triển KD"
-    }
-];
-
-        // Fill table - Hiển thị tất cả 23 dự án
-        const tableBody = document.getElementById('tableBody');
-        projectData.forEach((project, index) => {
-            const row = document.createElement('tr');
-            const saleRate = ((project.sold / project.total) * 100).toFixed(1);
-            const statusMap = {
-                'success': {class: 'badge-success', text: 'Bình thường'},
-                'warning': {class: 'badge-warning', text: 'Cần xử lý'},
-                'danger': {class: 'badge-danger', text: 'Khẩn cấp'}
-            };
-            const status = statusMap[project.status] || statusMap['success'];
-            
-            row.innerHTML = `
-                <td><strong>${index + 1}</strong></td>
-                <td><strong>${project.name}</strong></td>
-                <td>${project.region}</td>
-                <td>${project.total.toLocaleString()}</td>
-                <td>${project.sold.toLocaleString()}</td>
-                <td><strong style="color: #fbbf24;">${project.inventory.toLocaleString()}</strong></td>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span>${saleRate}%</span>
-                        <div class="progress-bar" style="width: 100px; flex-shrink: 0;">
-                            <div class="progress-fill" style="width: ${saleRate}%"></div>
-                        </div>
+        // Load data from JSON
+        fetch('data/projects.json')
+            .then(response => response.json())
+            .then(projects => {
+                console.log('Loaded', projects.length, 'projects');
+                
+                // Calculate KPI
+                const totalProjects = projects.length;
+                const totalSP = projects.reduce((sum, p) => sum + p.total, 0);
+                const soldSP = projects.reduce((sum, p) => sum + p.sold, 0);
+                const inventorySP = projects.reduce((sum, p) => sum + p.inventory, 0);
+                const totalValue = projects.reduce((sum, p) => sum + p.value, 0);
+                
+                document.getElementById('kpiSection').innerHTML = `
+                    <div class="kpi-card glass">
+                        <div class="kpi-value">${totalProjects}</div>
+                        <div class="kpi-label">Tổng Dự Án</div>
                     </div>
-                </td>
-                <td>${(project.value / 1000000000).toFixed(1)} tỷ</td>
-                <td><span class="badge ${status.class}">${status.text}</span></td>
-                <td>${project.note}</td>
-            `;
-            tableBody.appendChild(row);
-        });
+                    <div class="kpi-card glass">
+                        <div class="kpi-value">${totalSP.toLocaleString()}</div>
+                        <div class="kpi-label">Tổng SP</div>
+                    </div>
+                    <div class="kpi-card glass">
+                        <div class="kpi-value">${soldSP.toLocaleString()}</div>
+                        <div class="kpi-label">Đã Bán (${((soldSP/totalSP)*100).toFixed(1)}%)</div>
+                    </div>
+                    <div class="kpi-card glass">
+                        <div class="kpi-value">${inventorySP.toLocaleString()}</div>
+                        <div class="kpi-label">Tồn Kho (${((inventorySP/totalSP)*100).toFixed(1)}%)</div>
+                    </div>
+                    <div class="kpi-card glass">
+                        <div class="kpi-value">${(totalValue/1000000000).toFixed(0)}</div>
+                        <div class="kpi-label">Tổng GT (Tỷ)</div>
+                    </div>
+                `;
 
-        // Chart 1: Region distribution (Doughnut)
-        const ctx1 = document.getElementById('regionChart').getContext('2d');
-        new Chart(ctx1, {
-            type: 'doughnut',
-            data: {
-                labels: ['Đồng Nai', 'Bình Dương', 'TP.HCM'],
-                datasets: [{
-                    data: [8, 12, 1],
-                    backgroundColor: [
-                        'rgba(167, 139, 250, 0.8)',
-                        'rgba(99, 102, 241, 0.8)',
-                        'rgba(251, 191, 36, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(167, 139, 250, 1)',
-                        'rgba(99, 102, 241, 1)',
-                        'rgba(251, 191, 36, 1)'
-                    ],
-                    borderWidth: 2,
-                    hoverOffset: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            color: 'rgba(255,255,255,0.7)',
-                            padding: 20,
-                            font: { size: 13 }
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ': ' + context.parsed + ' dự án';
-                            }
-                        }
-                    }
-                }
-            }
-        });
+                // Fill table
+                const tableBody = document.getElementById('tableBody');
+                projects.forEach((project, index) => {
+                    const row = document.createElement('tr');
+                    const saleRate = project.total > 0 ? ((project.sold / project.total) * 100).toFixed(1) : 0;
+                    const statusMap = {
+                        'success': {class: 'badge-success', text: 'Bình thường'},
+                        'warning': {class: 'badge-warning', text: 'Cần xử lý'},
+                        'danger': {class: 'badge-danger', text: 'Khẩn cấp'}
+                    };
+                    const status = statusMap[project.status] || statusMap['success'];
+                    
+                    row.innerHTML = `
+                        <td><strong>${index + 1}</strong></td>
+                        <td><strong>${project.name}</strong></td>
+                        <td>${project.region}</td>
+                        <td>${project.total.toLocaleString()}</td>
+                        <td>${project.sold.toLocaleString()}</td>
+                        <td><strong style="color: #fbbf24;">${project.inventory.toLocaleString()}</strong></td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span>${saleRate}%</span>
+                                <div class="progress-bar" style="width: 100px; flex-shrink: 0;">
+                                    <div class="progress-fill" style="width: ${saleRate}%"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${(project.value / 1000000000).toFixed(1)} tỷ</td>
+                        <td><span class="badge ${status.class}">${status.text}</span></td>
+                        <td>${project.note}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
 
-        // Chart 2: Top projects by inventory (Horizontal Bar)
-        const ctx2 = document.getElementById('topProjectsChart').getContext('2d');
-        new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: projectData.slice(0, 10).map(p => p.name.split(' - ')[0]),
-                datasets: [{
-                    label: 'SP Tồn Kho',
-                    data: projectData.slice(0, 10).map(p => p.inventory),
-                    backgroundColor: 'rgba(99, 102, 241, 0.6)',
-                    borderColor: 'rgba(99, 102, 241, 1)',
-                    borderWidth: 1,
-                    borderRadius: 6,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                responsive: true,
-                indexAxis: 'y',
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.parsed.y + ' sản phẩm';
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            color: 'rgba(255,255,255,0.05)'
-                        },
-                        ticks: {
-                            color: 'rgba(255,255,255,0.6)'
-                        }
+                // Chart 1: Region distribution
+                const regionCounts = {};
+                projects.forEach(p => { regionCounts[p.region] = (regionCounts[p.region] || 0) + 1; });
+                const ctx1 = document.getElementById('regionChart').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(regionCounts),
+                        datasets: [{
+                            data: Object.values(regionCounts),
+                            backgroundColor: ['rgba(167, 139, 250, 0.8)', 'rgba(99, 102, 241, 0.8)', 'rgba(251, 191, 36, 0.8)'],
+                            borderColor: ['rgba(167, 139, 250, 1)', 'rgba(99, 102, 241, 1)', 'rgba(251, 191, 36, 1)'],
+                            borderWidth: 2
+                        }]
                     },
-                    y: {
-                        grid: { display: false },
-                        ticks: {
-                            color: 'rgba(255,255,255,0.7)'
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.7)' } } }
+                    }
+                });
+
+                // Chart 2: Top projects by inventory
+                const sortedProjects = [...projects].sort((a, b) => b.inventory - a.inventory);
+                const ctx2 = document.getElementById('topProjectsChart').getContext('2d');
+                new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: sortedProjects.slice(0, 10).map(p => p.name.split(' - ')[0].substring(0, 20)),
+                        datasets: [{
+                            label: 'SP Tồn Kho',
+                            data: sortedProjects.slice(0, 10).map(p => p.inventory),
+                            backgroundColor: 'rgba(99, 102, 241, 0.6)',
+                            borderColor: 'rgba(99, 102, 241, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        indexAxis: 'y',
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' }},
+                            y: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.7)' }}
                         }
                     }
-                }
-            }
-        });
+                });
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="10" style="text-align:center">Lỗi tải dữ liệu. Vui lòng thử lại.</td></tr>';
+            });
     </script>
 </body>
 </html>
