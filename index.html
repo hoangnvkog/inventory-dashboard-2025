@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BÁO CÁO SẢN PHẨM TỒN - KIM OANH GROUP</title>
+    <title>Báo Cáo Sản Phẩm Tồn - Kim Oanh Group</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;color:#e0e0e0}
+        body{font-family:'Inter','Segoe UI',Arial,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;color:#e0e0e0}
         .container{max-width:1440px;margin:0 auto;padding:24px}
         header{text-align:center;padding:40px 0 32px;margin-bottom:32px}
-        header h1{font-size:2.8em;font-weight:700;background:linear-gradient(135deg,#a78bfa,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        header p{font-size:1.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:3px}
+        header h1{font-size:2.5em;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(167,139,250,0.3)}
+        header p{font-size:1em;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:3px;margin-top:10px}
         .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:32px}
         .kpi-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:28px 24px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
-        .kpi-value{font-size:2.5em;font-weight:700;background:linear-gradient(135deg,#fff,#a5b4fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .kpi-label{font-size:0.85em;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:2px}
-        .kpi-sub{font-size:0.75em;color:rgba(255,255,255,0.4);margin-top:8px}
+        .kpi-value{font-size:2.2em;font-weight:700;color:#fff}
+        .kpi-value.accent1{color:#a78bfa}
+        .kpi-value.accent2{color:#fbbf24}
+        .kpi-value.accent3{color:#4ade80}
+        .kpi-label{font-size:0.85em;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:2px;margin-top:8px}
+        .kpi-sub{font-size:0.75em;color:rgba(255,255,255,0.4);margin-top:6px}
         .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(450px,1fr));gap:24px;margin-bottom:32px}
         .chart-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:28px}
         .chart-card h3{color:#a5b4fc;margin-bottom:20px;font-size:1.1em;text-transform:uppercase;letter-spacing:1px}
@@ -25,69 +28,115 @@
         .table-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:28px;overflow:hidden}
         .table-card h3{color:#a5b4fc;margin-bottom:24px;font-size:1.1em;text-transform:uppercase;letter-spacing:1px}
         .table-wrapper{overflow-x:auto;border-radius:16px}
-        table{width:100%;border-collapse:collapse;font-size:0.85em}
-        th{background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.1));color:#a5b4fc;padding:16px 12px;text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:1px;font-size:0.75em;border-bottom:1px solid rgba(99,102,241,0.1);white-space:nowrap}
+        table{width:100%;border-collapse:collapse;font-size:0.85em;min-width:1200px}
+        th{background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.1));color:#a5b4fc;padding:16px 12px;text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:1px;font-size:0.75em;border-bottom:1px solid rgba(99,102,241,0.1);white-space:nowrap;position:sticky;top:0}
         td{padding:14px 12px;border-bottom:1px solid rgba(255,255,255,0.03);color:rgba(255,255,255,0.8)}
         tr:hover{background:rgba(99,102,241,0.05)}
         .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:0.8em;font-weight:600}
-        .badge-success{background:rgba(34,197,94,0.1);color:#4ade80}
-        .badge-warning{background:rgba(251,191,36,0.1);color:#fbbf24}
-        .badge-danger{background:rgba(239,68,68,0.1);color:#f87171}
-        .badge-info{background:rgba(59,130,246,0.1);color:#60a5fa}
+        .badge-success{background:rgba(34,197,94,0.15);color:#4ade80}
+        .badge-warning{background:rgba(251,191,36,0.15);color:#fbbf24}
+        .badge-danger{background:rgba(239,68,68,0.15);color:#f87171}
+        .badge-info{background:rgba(59,130,246,0.15);color:#60a5fa}
         .progress-bar{width:80px;height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;display:inline-block}
         .progress-fill{height:100%;border-radius:3px}
         .pg-gr{background:linear-gradient(90deg,#22c55e,#4ade80)}
         .pg-ye{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
         .pg-re{background:linear-gradient(90deg,#ef4444,#f87171)}
+        .progress-text{margin-left:8px;font-size:0.85em}
         footer{text-align:center;padding:40px;color:rgba(255,255,255,0.3);font-size:0.85em}
         .alert-card{background:linear-gradient(135deg,rgba(239,68,68,0.1),rgba(251,191,36,0.05));border:1px solid rgba(239,68,68,0.2);border-radius:16px;padding:20px;margin-bottom:32px}
-        .alert-card h4{color:#fbbf24;margin-bottom:12px}
+        .alert-card h4{color:#fbbf24;margin-bottom:12px;font-size:1.1em}
         .alert-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
         .alert-item:last-child{border-bottom:none}
+        .scroll-table{max-height:600px;overflow-y:auto}
+        .scroll-table::-webkit-scrollbar{width:6px}
+        .scroll-table::-webkit-scrollbar-track{background:rgba(255,255,255,0.02);border-radius:3px}
+        .scroll-table::-webkit-scrollbar-thumb{background:rgba(99,102,241,0.3);border-radius:3px}
         @media(max-width:768px){.chart-grid{grid-template-columns:1fr}.wide-chart{grid-column:1}header h1{font-size:1.8em}th,td{padding:10px 8px;font-size:0.8em}}
     </style>
 </head>
 <body>
-    <div class="container">
-        <header><h1>BÁO CÁO SẢN PHẨM TỒN</h1><p>KIM OANH GROUP | Ngày cập nhật: 28/02/2025</p></header>
-        <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-value">23</div><div class="kpi-label">Tổng Dự Án</div><div class="kpi-sub">9 Đang KD | 10 Khóa | 2 Ngưng</div></div>
-            <div class="kpi-card"><div class="kpi-value">15,849</div><div class="kpi-label">Tổng SP</div><div class="kpi-sub">Đã bán: 15,018 SP</div></div>
-            <div class="kpi-card"><div class="kpi-value">926</div><div class="kpi-label">Tồn Kho</div><div class="kpi-sub">QH:383 | Giữ:383 | Bình thường:167</div></div>
-            <div class="kpi-card"><div class="kpi-value">1,179</div><div class="kpi-label">Tổng GT (Tỷ)</div><div class="kpi-sub">Có thể KD: 447.9 tỷ</div></div>
-            <div class="kpi-card"><div class="kpi-value">94.5%</div><div class="kpi-label">Tỷ Lệ Bán</div><div class="kpi-sub">3 dự án < 95%</div></div>
-        </div>
-        <div class="chart-grid"><div class="chart-card alert-card"><h4>🚨 DỰ ÁN CẦN ƯU TIÊN XỬ LÝ</h4><div class="alert-item"><span><strong>Tam Phước - ĐN</strong> - Bán: 59.9% | GT tồn: <span style="color:#fbbf24">244.4 tỷ</span></span><span class="badge badge-danger">Khẩn cấp</span></div><div class="alert-item"><span><strong>Phước Tân - ĐN</strong> - Bán: 80.9% | GT tồn: <span style="color:#fbbf24">105.6 tỷ</span></span><span class="badge badge-warning">Cần xử lý</span></div><div class="alert-item"><span><strong>Richland Residence</strong> - Bán: 92.8% | GT tồn: <span style="color:#fbbf24">153.5 tỷ</span></span><span class="badge badge-warning">Cần xử lý</span></div></div></div>
-        <div class="chart-grid">
-            <div class="chart-card"><h3>📊 Phân Loại Tồn Kho</h3><canvas id="inventoryTypeChart"></canvas></div>
-            <div class="chart-card"><h3>📋 Phân Bố Trạng Thái Dự Án</h3><canvas id="statusChart"></canvas></div>
-        </div>
-        <div class="chart-grid">
-            <div class="chart-card"><h3>🗺️ Phân Bố Theo Vùng Miền</h3><canvas id="regionChart"></canvas></div>
-            <div class="chart-card"><h3>💰 Giá Trị Tồn Theo Vùng</h3><canvas id="regionValueChart"></canvas></div>
-        </div>
-        <div class="chart-grid"><div class="chart-card wide-chart"><h3>📈 Tốc Độ Bán Hàng Theo Dự Án (%)</h3><canvas id="salesVelocityChart"></canvas></div></div>
-        <div class="chart-grid"><div class="chart-card wide-chart"><h3>🏆 Top 10 Giá Trị Tồn Kho (Tỷ VND)</h3><canvas id="topProjectsChart"></canvas></div></div>
-        <div class="chart-grid"><div class="chart-card wide-chart"><h3>📊 Rổ Hàng KD vs SP Bị Giữ Lại (Tỷ VND)</h3><canvas id="valueBreakdownChart"></canvas></div></div>
-        <div class="table-card"><h3>📋 Chi Tiết Dự Án (23 dự án)</h3><div class="table-wrapper"><table id="projectTable"><thead><tr><th>STT</th><th>Dự Án</th><th>Vùng</th><th>Tổng SP</th><th>Đã Bán</th><th>Tồn</th><th>Tỷ lệ</th><th>Giá Trị</th><th>Trạng Thái</th><th>Phân Loại</th></tr></thead><tbody></tbody></table></div></div>
+<div class="container">
+    <header>
+        <h1>BAO CAO SAN PHAM TON</h1>
+        <p>KIM OANH GROUP - Ngay cap nhat: 28/02/2025</p>
+    </header>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-value">23</div><div class="kpi-label">Tong Du An</div><div class="kpi-sub">9 Dang KD | 10 Khoa | 2 Ngưng</div></div>
+        <div class="kpi-card"><div class="kpi-value accent1">15,849</div><div class="kpi-label">Tong SP</div><div class="kpi-sub">Da ban: 15,018 SP</div></div>
+        <div class="kpi-card"><div class="kpi-value accent2">926</div><div class="kpi-label">Ton Kho</div><div class="kpi-sub">QH:383 | Giu:383 | Binh thuong:167</div></div>
+        <div class="kpi-card"><div class="kpi-value accent3">1,179</div><div class="kpi-label">Tong GT (Ty)</div><div class="kpi-sub">Co the KD: 447.9 Ty</div></div>
+        <div class="kpi-card"><div class="kpi-value">94.5%</div><div class="kpi-label">Ty Le Ban</div><div class="kpi-sub">3 du an < 95%</div></div>
     </div>
-    <footer>Dashboard KIM OANH GROUP | 2025</footer>
-    <script>
-const chartColors={purple:'rgba(167,139,250,0.8)',blue:'rgba(99,102,241,0.8)',orange:'rgba(251,191,36,0.8)',green:'rgba(52,211,153,0.8)',red:'rgba(239,68,68,0.8)'};
-Chart.defaults.color='rgba(255,255,255,0.6)';Chart.defaults.borderColor='rgba(255,255,255,0.05)';
-new Chart(document.getElementById('inventoryTypeChart'),{type:'doughnut',data:{labels:['SP điều chỉnh QH','SP Sếp giữ/bị khóa','SP bình thường'],datasets:[{data:[383,383,167],backgroundColor:[chartColors.red,chartColors.orange,chartColors.green],borderWidth:2}]},options:{plugins:{legend:{position:'bottom'}}}});
-new Chart(document.getElementById('statusChart'),{type:'doughnut',data:{labels:['Bị khóa/Không KD','Đang KD','Đã bán hết','Ngưng môi giới'],datasets:[{data:[10,9,5,2],backgroundColor:[chartColors.orange,chartColors.green,chartColors.blue,chartColors.red],borderWidth:2}]},options:{plugins:{legend:{position:'bottom'}}}});
-new Chart(document.getElementById('regionChart'),{type:'bar',data:{labels:['Đồng Nai','Bình Dương','TP.HCM','Khác'],datasets:[{label:'Tổng SP',data:[7467,6687,431,2475],backgroundColor:chartColors.blue},{label:'Đã bán',data:[6798,6591,425,2313],backgroundColor:chartColors.green},{label:'Tồn kho',data:[669,191,6,67],backgroundColor:chartColors.orange}]},options:{scales:{y:{stacked:false},x:{stacked:false}},plugins:{legend:{position:'top'}}}});
-new Chart(document.getElementById('regionValueChart'),{type:'bar',data:{labels:['Đồng Nai','Bình Dương','TP.HCM','Khác'],datasets:[{label:'Giá trị tồn (Tỷ)',data:[797.8,185.1,10.6,185.5],backgroundColor:[chartColors.purple,chartColors.blue,chartColors.orange,chartColors.green],borderWidth:2}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}});
-new Chart(document.getElementById('salesVelocityChart'),{type:'bar',data:{labels:['An Điền','Royal Town','Nhà Ở H2','Hòa Lợi','Siêu Thị TB','MP4A','MP4B','KDC Kim Oanh','Phú Hội','Cầu Đò - BD','Metro','Legacy','Newland','Nhà Xã Hội CĐ','Bửu Hòa','Tân Hạnh','Richland','Trường Lưu Q9','Phước Tân','Tam Phước'],datasets:[{label:'Tỷ lệ bán (%)',data:[100,100,100,100,99.6,96.1,96.3,96.4,96.1,99.4,99.6,99.5,98.8,98.2,94,93.8,92.8,98.6,80.9,59.9],backgroundColor:(ctx)=>ctx.raw>=95?chartColors.green:ctx.raw>=80?chartColors.orange:chartColors.red,borderWidth:1}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{min:0,max:105,ticks:{callback:v=>v+'%'}}}}}});
-new Chart(document.getElementById('topProjectsChart'),{type:'bar',data:{labels:['Tam Phước','KDC Kim Oanh','Richland','Phú Hội','MP4B','MP4A','Phước Tân','Bửu Hòa','KĐT Bàu Xéo','Cầu Đò'],datasets:[{label:'Giá trị tồn (Tỷ VND)',data:[244.4,221.3,153.5,137.5,112.7,23.1,105.6,44.3,31.1,24],backgroundColor:chartColors.purple,borderWidth:1}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>v+' Tỷ'}}}}}}});
-new Chart(document.getElementById('valueBreakdownChart'),{type:'bar',data:{labels:['Tam Phước','Phú Hội','Phước Tân','MP4B','MP4A','Tân Hạnh','Bửu Hòa','Richland','KDC Kim Oanh','KĐT Bàu Xéo','Nhà Xã Hội CĐ','Legacy','Metro','Cầu Đò - BD','Golden Future'],datasets:[{label:'Rổ hàng KD',data:[0,20.1,15.1,4.9,0,0.8,16,0,188.7,31.1,1.5,4.3,2.5,8.9,5.4],backgroundColor:chartColors.green},{label:'SP bị giữ lại/khóa',data:[244.4,117.5,90.4,107.8,23.1,12.7,28.3,15.3,32.6,0,6.2,5.4,3.8,15.1,0],backgroundColor:chartColors.red}]},options:{indexAxis:'y',scales:{x:{stacked:true},y:{stacked:true}},plugins:{legend:{position:'top'}}}});
-const projectsData=[{name:'Tam Phước - ĐN',region:'TP.HCM',total:815,sold:488,inv:327,rate:59.9,value:244.4,status:'Khẩn cấp',note:'Khóa SP, không KD'},{name:'Phú Hội - ĐN',region:'TP.HCM',total:3160,sold:3036,inv:124,rate:96.1,value:137.5,status:'Cần xử lý',note:'Khóa SP vướng QH'},{name:'Bửu Hòa - ĐN',region:'TP.HCM',total:167,sold:157,inv:10,rate:94,value:44.3,status:'Bình thường',note:'KD SP bình thường'},{name:'Phước Tân - ĐN',region:'TP.HCM',total:555,sold:449,inv:106,rate:80.9,value:105.6,status:'Cần xử lý',note:'Thanh lý 120 nền'},{name:'Hóa An - ĐN',region:'TP.HCM',total:222,sold:221,inv:1,rate:99.5,value:0.9,status:'Cần xử lý',note:'Khóa SP vướng'},{name:'Tân Hạnh - ĐN',region:'TP.HCM',total:275,sold:258,inv:17,rate:93.8,value:12.7,status:'Cần xử lý',note:'Khóa SP'},{name:'KĐT Bàu Xéo',region:'Đồng Nai',total:145,sold:137,inv:8,rate:94.5,value:31.1,status:'Bình thường',note:'KD SP bình thường'},{name:'Siêu Thị Trảng Bom',region:'TP.HCM',total:224,sold:223,inv:1,rate:99.6,value:7.5,status:'Bình thường',note:'Giao sàn ĐN'},{name:'KDC Kim Oanh',region:'Đồng Nai',total:2128,sold:2052,inv:76,rate:96.4,value:221.3,status:'Bình thường',note:'KD SP bình thường'},{name:'MP4A - Bình Dương',region:'TP.HCM',total:691,sold:664,inv:27,rate:96.1,value:23.1,status:'Cần xử lý',note:'Thanh lý 35 SP'},{name:'MP4B - Bình Dương',region:'TP.HCM',total:1123,sold:1082,inv:136,rate:96.3,value:112.7,status:'Cần xử lý',note:'Thanh lý, khóa SP'},{name:'Nhà Ở Xã Hội Cầu Đò',region:'TP.HCM',total:276,sold:271,inv:5,rate:98.2,value:7.7,status:'Cần xử lý',note:'KD SP BT - 04 vướng đất lúa'},{name:'An Điền - Bình Dương',region:'TP.HCM',total:413,sold:413,inv:0,rate:100,value:0,status:'Đã bán hết',note:'Ngưng môi giới - Ra sổ'},{name:'Cầu Đò - Bình Dương',region:'TP.HCM',total:2023,sold:2011,inv:12,rate:99.4,value:24,status:'Bình thường',note:'KD - Cho môi giới'},{name:'Metro Tower - BD',region:'TP.HCM',total:712,sold:709,inv:3,rate:99.6,value:6.3,status:'Cần xử lý',note:'KD - Khóa căn vay'},{name:'Legacy - Bình Dương',region:'Bình Dương',total:940,sold:935,inv:5,rate:99.5,value:9.1,status:'Cần xử lý',note:'Khóa CLKD - TMDV'},{name:'Golden Future - BD',region:'Bình Dương',total:509,sold:504,inv:5,rate:99,value:5.4,status:'Bình thường',note:'KD SP bình thường'},{name:'Royal Town - BD',region:'Bình Dương',total:22,sold:22,inv:0,rate:100,value:0,status:'Bình thường',note:'KD SP bình thường'},{name:'Newland - Bình Dương',region:'Bình Dương',total:254,sold:251,inv:3,rate:98.8,value:4.6,status:'Bình thường',note:'KD SP bình thường'},{name:'Trường Lưu Q9',region:'TP.HCM',total:431,sold:425,inv:6,rate:98.6,value:10.6,status:'Ngưng MG',note:'Ngưng môi giới'},{name:'Richland Residence',region:'TP.HCM',total:748,sold:694,inv:54,rate:92.8,value:153.5,status:'Bình thường',note:'KD SP bình thường'},{name:'Nhà Ở H2 - MP3',region:'TP.HCM',total:8,sold:8,inv:0,rate:100,value:0,status:'Bình thường',note:'Môi giới lại'},{name:'Hòa Lợi 69 Nền',region:'TP.HCM',total:8,sold:8,inv:0,rate:100,value:0,status:'Bình thường',note:'Đang triển KD'}];
+
+    <!-- Alert -->
+    <div class="chart-grid"><div class="chart-card alert-card">
+        <h4>Can Uu Tien Xu Ly</h4>
+        <div class="alert-item"><span><strong>Tam Phuoc - DN:</strong> Ban  59.9% | GT ton: <span style="color:#fbbf24">244.4 Ty</span></span><span class="badge badge-danger">Khan Cap</span></div>
+        <div class="alert-item"><span><strong>Phuoc Tan - DN:</strong> Ban  80.9% | GT ton: <span style="color:#fbbf24">105.6 Ty</span></span><span class="badge badge-warning">Can Xu Ly</span></div>
+        <div class="alert-item"><span><strong>Richland:</strong> Ban  92.8% | GT ton: <span style="color:#fbbf24">153.5 Ty</span></span><span class="badge badge-warning">Can Xu Ly</span></div>
+    </div></div>
+
+    <!-- Charts Row 1 -->
+    <div class="chart-grid">
+        <div class="chart-card"><h3>Phan Loai Ton Kho</h3><canvas id="inventoryTypeChart"></canvas></div>
+        <div class="chart-card"><h3>Phan Bo Trang Thai Du An</h3><canvas id="statusChart"></canvas></div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="chart-grid">
+        <div class="chart-card"><h3>Phan Bo Theo Vung Mien</h3><canvas id="regionChart"></canvas></div>
+        <div class="chart-card"><h3>Gia Tri Ton Theo Vung</h3><canvas id="regionValueChart"></canvas></div>
+    </div>
+
+    <!-- Charts Wide -->
+    <div class="chart-grid"><div class="chart-card wide-chart"><h3>Toc Do Ban Hang (%)</h3><canvas id="salesVelocityChart"></canvas></div></div>
+    <div class="chart-grid"><div class="chart-card wide-chart"><h3>Top 10 Gia Tri Ton Kho (Ty VND)</h3><canvas id="topProjectsChart"></canvas></div></div>
+    <div class="chart-grid"><div class="chart-card wide-chart"><h3>Ro Hang KD vs SP Bi Giu Lai (Ty VND)</h3><canvas id="valueBreakdownChart"></canvas></div></div>
+
+    <!-- Table -->
+    <div class="table-card"><h3>Chi Tiet Du An (23 du an)</h3><div class="scroll-table"><div class="table-wrapper">
+        <table id="projectTable"><thead><tr><th>STT</th><th>Du An</th><th>Vung</th><th>Tong SP</th><th>Da Ban</th><th>Ton</th><th>Ty Le</th><th>Gia Tri</th><th>Trang Thai</th><th>Ghi Chu</th></tr></thead><tbody></tbody></table>
+    </div></div></div>
+</div>
+
+<footer>Dashboard KIM OANH GROUP - 2025</footer>
+
+<script>
+const C={purple:'rgba(167,139,250,0.8)',blue:'rgba(99,102,241,0.8)',orange:'rgba(251,191,36,0.8)',green:'rgba(52,211,153,0.8)',red:'rgba(239,68,68,0.8)'};
+Chart.defaults.color='rgba(255,255,255,0.6)';Chart.defaults.borderColor='rgba(255,255,255,0.05)';Chart.defaults.font.family="'Inter','Segoe UI',Arial,sans-serif";
+
+new Chart(document.getElementById('inventoryTypeChart'),{type:'doughnut',data:{labels:['SP dieu chinh QH','SP Sep giu/bi khoa','SP binh thuong'],datasets:[{data:[383,383,167],backgroundColor:[C.red,C.orange,C.green],borderWidth:2}]},options:{plugins:{legend:{position:'bottom'}}}});
+new Chart(document.getElementById('statusChart'),{type:'doughnut',data:{labels:['Bi khoa/Khong KD','Dang KD','Da ban het','Ngưng moi gioi'],datasets:[{data:[10,9,5,2],backgroundColor:[C.orange,C.green,C.blue,C.red],borderWidth:2}]},options:{plugins:{legend:{position:'bottom'}}}});
+new Chart(document.getElementById('regionChart'),{type:'bar',data:{labels:['Dong Nai','Binh Duong','TP.HCM','Khac'],datasets:[{label:'Tong SP',data:[7467,6687,431,2475],backgroundColor:C.blue},{label:'Da ban',data:[6798,6591,425,2313],backgroundColor:C.green},{label:'Ton kho',data:[669,191,6,67],backgroundColor:C.orange}]},options:{scales:{y:{stacked:false,beginAtZero:true},x:{stacked:false}},plugins:{legend:{position:'top'}}}});
+new Chart(document.getElementById('regionValueChart'),{type:'bar',data:{labels:['Dong Nai','Binh Duong','TP.HCM','Khac'],datasets:[{label:'Gia tri ton (Ty)',data:[797.8,185.1,10.6,185.5],backgroundColor:[C.purple,C.blue,C.orange,C.green],borderWidth:2}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:function(v){return v+' Ty'}}}}}});
+new Chart(document.getElementById('salesVelocityChart'),{type:'bar',data:{labels:['An Dien','Royal Town','Nha H2-MP3','Hoa Loi','Sieu Thi TB','MP4A','MP4B','Kim Oanh','Phu Hoi','Cau Do','Metro','Legacy','Newland','NXH Cau Do','Buu Hoa','Tan Hanh','Richland','Truong Luu','Phuoc Tan','Tam Phuoc'],datasets:[{label:'Ty le ban (%)',data:[100,100,100,100,99.6,96.1,96.3,96.4,96.1,99.4,99.6,99.5,98.8,98.2,94,93.8,92.8,98.6,80.9,59.9],backgroundColor:function(ctx){return ctx.raw>=95?C.green:ctx.raw>=80?C.orange:C.red},borderWidth:1}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{min:0,max:105,grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:function(v){return v+'%'}}}}}});
+new Chart(document.getElementById('topProjectsChart'),{type:'bar',data:{labels:['Tam Phuoc','KDC Kim Oanh','Richland','Phu Hoi','MP4B','MP4A','Phuoc Tan','Buu Hoa','Bau Xeo','Cau Do'],datasets:[{label:'Gia tri ton (Ty VND)',data:[244.4,221.3,153.5,137.5,112.7,23.1,105.6,44.3,31.1,24],backgroundColor:C.purple,borderWidth:1}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:function(v){return v+' Ty'}}}}}});
+new Chart(document.getElementById('valueBreakdownChart'),{type:'bar',data:{labels:['Tam Phuoc','Phu Hoi','Phuoc Tan','MP4B','MP4A','Tan Hanh','Buu Hoa','Richland','Kim Oanh','Bau Xeo','NXH Cau Do','Legacy','Metro','Cau Do BD','Golden Future'],datasets:[{label:'Ro hang KD',data:[0,20.1,15.1,4.9,0,0.75,16,0,188.7,31.1,1.5,4.3,2.45,8.85,5.36],backgroundColor:C.green},{label:'SP bi giu lai',data:[244.4,117.5,90.4,107.8,23.1,11.94,28.25,15.3,32.59,0,6.15,5,3.85,15.2,0],backgroundColor:C.red}]},options:{indexAxis:'y',scales:{x:{stacked:true,beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)'},ticks:{callback:function(v){return v+' Ty'}}},y:{stacked:true}},plugins:{legend:{position:'top'}}}});
+
+const projectsData=[
+    {name:'Tam Phuoc - DN',region:'TP.HCM',total:815,sold:488,inv:327,rate:59.9,value:244.4,status:'Khan cap',note:'Khoa SP, khong trien khai KD'},{name:'Phu Hoi - DN',region:'TP.HCM',total:3160,sold:3036,inv:124,rate:96.1,value:137.5,status:'Can xu ly',note:'Khoa SP vuong QH'},{name:'Bu Hoa - DN',region:'TP.HCM',total:167,sold:157,inv:10,rate:94,value:44.3,status:'Binh thuong',note:'KD SP binh thuong'},{name:'Phuoc Tan - DN',region:'TP.HCM',total:555,sold:449,inv:106,rate:80.9,value:105.6,status:'Can xu ly',note:'Thanh ly 120 nen'},{name:'Hoa An - DN',region:'TP.HCM',total:222,sold:221,inv:1,rate:99.5,value:0.9,status:'Can xu ly',note:'Khoa SP vuong'},{name:'Tan Hanh - DN',region:'TP.HCM',total:275,sold:258,inv:17,rate:93.8,value:12.7,status:'Can xu ly',note:'Khoa SP'},{name:'KDT Bau Xeo',region:'Dong Nai',total:145,sold:137,inv:8,rate:94.5,value:31.1,status:'Binh thuong',note:'KD SP binh thuong'},{name:'Sieu Thi Trang Bom',region:'TP.HCM',total:224,sold:223,inv:1,rate:99.6,value:7.5,status:'Binh thuong',note:'Giao san DN'},{name:'KDC Kim Oanh',region:'Dong Nai',total:2128,sold:2052,inv:76,rate:96.4,value:221.3,status:'Binh thuong',note:'KD SP binh thuong'},{name:'MP4A - Binh Duong',region:'TP.HCM',total:691,sold:664,inv:27,rate:96.1,value:23.1,status:'Can xu ly',note:'Thanh ly 35 SP'},{name:'MP4B - Binh Duong',region:'TP.HCM',total:1123,sold:1082,inv:136,rate:96.3,value:112.7,status:'Can xu ly',note:'Thanh ly, khoa SP'},{name:'Nha O Xa Hoi Cau Do',region:'TP.HCM',total:276,sold:271,inv:5,rate:98.2,value:7.7,status:'Can xu ly',note:'KD BT - 04 SP vuong dat lua'},{name:'An Dien - Binh Duong',region:'TP.HCM',total:413,sold:413,inv:0,rate:100,value:0,status:'Da ban het',note:'Ngưng moi gioi - Ra so'},{name:'Cau Do - Binh Duong',region:'TP.HCM',total:2023,sold:2011,inv:12,rate:99.4,value:24,status:'Binh thuong',note:'KD - Cho moi gioi'},{name:'Metro Tower - BD',region:'TP.HCM',total:712,sold:709,inv:3,rate:99.6,value:6.3,status:'Can xu ly',note:'KD - Khoa can vay'},{name:'Legacy - Binh Duong',region:'Binh Duong',total:940,sold:935,inv:5,rate:99.5,value:9.1,status:'Can xu ly',note:'Khoa CLKD - TMDV'},{name:'Golden Future - BD',region:'Binh Duong',total:509,sold:504,inv:5,rate:99,value:5.4,status:'Binh thuong',note:'KD SP binh thuong'},{name:'Royal Town',region:'Binh Duong',total:22,sold:22,inv:0,rate:100,value:0,status:'Binh thuong',note:'KD SP binh thuong'},{name:'Newland',region:'Binh Duong',total:254,sold:251,inv:3,rate:98.8,value:4.6,status:'Binh thuong',note:'KD SP binh thuong'},{name:'Truong Luu Q9',region:'TP.HCM',total:431,sold:425,inv:6,rate:98.6,value:10.6,status:'Ngưng MG',note:'Ngưng moi gioi'},{name:'Richland Residence',region:'TP.HCM',total:748,sold:694,inv:54,rate:92.8,value:153.5,status:'Binh thuong',note:'KD SP binh thuong'},{name:'Nha O H2 - MP3',region:'TP.HCM',total:8,sold:8,inv:0,rate:100,value:0,status:'Binh thuong',note:'Moi gioi lai'},{name:'Hoa Loi 69 Nen',region:'TP.HCM',total:8,sold:8,inv:0,rate:100,value:0,status:'Binh thuong',note:'Dang trien KD'}
+];
+
 const tbl=document.querySelector('#projectTable tbody');
-projectsData.forEach((p,i)=>{
-    const badgeClass=p.status==='Khẩn cấp'?'badge-danger':p.status==='Cần xử lý'?'badge-warning':p.status==='Đã bán hết'?'badge-info':'badge-success';
-    const pgClass=p.rate<80?'pg-re':p.rate<95?'pg-ye':'pg-gr';
-    tbl.innerHTML+=`<tr><td><strong>${i+1}</strong></td><td><strong>${p.name}</strong></td><td>${p.region}</td><td>${p.total}</td><td>${p.sold}</td><td><strong style="color:#fbbf24">${p.inv}</strong></td><td><div style="display:flex;align-items:center;gap:8px"><span>${p.rate}%</span><div class="progress-bar"><div class="progress-fill ${pgClass}" style="width:${Math.min(p.rate,100)}%"></div></div></div></td><td>${p.value?p.value+' tỷ':'0'}</td><td><span class="badge ${badgeClass}">${p.status}</span></td><td>${p.note}</td></tr>`});
-    </script>
+projectsData.forEach(function(p,i){
+    var badgeClass=p.status==='Khan cap'?'badge-danger':p.status==='Can xu ly'?'badge-warning':p.status==='Da ban het'?'badge-info':'badge-success';
+    var pgClass=p.rate<80?'pg-re':p.rate<95?'pg-ye':'pg-gr';
+    var row=document.createElement('tr');
+    row.innerHTML='<td><strong>'+(i+1)+'</strong></td>'+
+        '<td><strong>'+p.name+'</strong></td>'+
+        '<td>'+p.region+'</td>'+
+        '<td>'+p.total+'</td>'+
+        '<td>'+p.sold+'</td>'+
+        '<td><strong style="color:#fbbf24">'+p.inv+'</strong></td>'+
+        '<td><div style="display:flex;align-items:center"><div class="progress-bar"><div class="progress-fill '+pgClass+'" style="width:'+Math.min(p.rate,100)+'%"></div></div><span class="progress-text">'+p.rate+'%</span></div></td>'+
+        '<td>'+(p.value?p.value.toFixed(1)+' Ty':'0')+'</td>'+
+        '<td><span class="badge '+badgeClass+'">'+p.status+'</span></td>'+
+        '<td>'+p.note+'</td>';
+    tbl.appendChild(row);
+});
+</script>
 </body>
 </html>
