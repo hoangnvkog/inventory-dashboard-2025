@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Warm Analytics - Kim Oanh Group</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter','Segoe UI',Arial,sans-serif;background:#fff7ed;min-height:100vh;color:#431407}
+        .container{max-width:1440px;margin:0 auto;padding:24px}
+        header{text-align:center;padding:40px 0 32px;margin-bottom:32px;border-bottom:2px solid #fed7aa}
+        header h1{font-family:'DM Serif Display',serif;font-size:2.5em;font-weight:700;color:#9a3412;letter-spacing:1px}
+        header p{font-size:1em;color:#c2410c;letter-spacing:2px;margin-top:10px}
+        .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:32px}
+        .kpi-card{background:#fff;border:1px solid #ffedd5;border-radius:16px;padding:28px 24px;text-align:center;box-shadow:0 2px 8px rgba(249,115,22,.05);transition:all .3s}
+        .kpi-card:hover{box-shadow:0 4px 16px rgba(249,115,22,.1);transform:translateY(-2px)}
+        .kpi-value{font-size:2.2em;font-weight:700;color:#7c2d12}
+        .kpi-value.accent1{color:#c2410c}
+        .kpi-value.accent2{color:#ea580c}
+        .kpi-value.accent3{color:#f97316}
+        .kpi-label{font-size:.85em;color:#9a3412;text-transform:uppercase;letter-spacing:2px;margin-top:8px;font-weight:500}
+        .kpi-sub{font-size:.75em;color:#c2410c;margin-top:6px}
+        .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(450px,1fr));gap:24px;margin-bottom:32px}
+        .chart-card{background:#fff;border:1px solid #ffedd5;border-radius:16px;padding:28px;box-shadow:0 2px 8px rgba(249,115,22,.05)}
+        .chart-card:hover{box-shadow:0 4px 16px rgba(249,115,22,.1)}
+        .chart-card h3{color:#9a3412;margin-bottom:20px;font-size:1.1em;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+        .wide-chart{grid-column:1/-1}
+        .table-card{background:#fff;border:1px solid #ffedd5;border-radius:16px;padding:28px;overflow:hidden;box-shadow:0 2px 8px rgba(249,115,22,.05)}
+        .table-card h3{color:#9a3412;margin-bottom:24px;font-size:1.1em;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+        .table-wrapper{overflow-x:auto;border-radius:12px}
+        table{width:100%;border-collapse:collapse;font-size:.85em;min-width:1200px}
+        th{background:#fff7ed;color:#9a3412;padding:16px 12px;text-align:left;font-weight:600;text-transform:uppercase;letter-spacing:1px;font-size:.75em;border-bottom:2px solid #fed7aa;white-space:nowrap;position:sticky;top:0}
+        td{padding:14px 12px;border-bottom:1px solid #ffedd5;color:#431407}
+        tr:hover{background:#fff7ed}
+        .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:.8em;font-weight:600}
+        .badge-success{background:rgba(52,211,153,.15);color:#15803d}
+        .badge-warning{background:rgba(251,191,36,.15);color:#a16207}
+        .badge-danger{background:rgba(239,68,68,.15);color:#b91c1c}
+        .badge-info{background:rgba(249,115,22,.15);color:#c2410c}
+        footer{text-align:center;padding:40px;color:#c2410c;font-size:.85em}
+        .alert-card{background:#fef3c7;border:1px solid #fbbf24;border-radius:16px;padding:20px;margin-bottom:32px}
+        .alert-card h4{color:#b45309;margin-bottom:12px;font-size:1.1em}
+        .alert-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+        .alert-item:last-child{border-bottom:none}
+        .scroll-table{max-height:600px;overflow-y:auto}
+        .scroll-table::-webkit-scrollbar{width:6px}
+        .scroll-table::-webkit-scrollbar-track{background:transparent;border-radius:3px}
+        .scroll-table::-webkit-scrollbar-thumb{background:#fdba74;border-radius:3px}
+        @media(max-width:768px){.chart-grid{grid-template-columns:1fr}.wide-chart{grid-column:1}header h1{font-size:1.8em}th,td{padding:10px 8px;font-size:.8em}}
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>BÁO CÁO SẢN PHẨM TỒN - WARM ANALYTICS</h1>
+        <p>KIM OANH GROUP - Ngày cập nhật: 19/05/2026</p>
+    </header>
+    <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-value">23</div><div class="kpi-label">Tổng Dự Án</div><div class="kpi-sub">9 Đang KD | 10 Khóa | 2 Ngưng</div></div>
+        <div class="kpi-card"><div class="kpi-value accent1">15,849</div><div class="kpi-label">Tổng SP</div><div class="kpi-sub">Đã bán: 15,018 SP</div></div>
+        <div class="kpi-card"><div class="kpi-value accent2">926</div><div class="kpi-label">Tồn Kho</div><div class="kpi-sub">QH:383 | Giữ:383 | Bình thường:167</div></div>
+        <div class="kpi-card"><div class="kpi-value accent3">1,179</div><div class="kpi-label">Tổng GT (Tỷ)</div><div class="kpi-sub">Có thể KD: 447.9 Tỷ</div></div>
+        <div class="kpi-card"><div class="kpi-value">94.5%</div><div class="kpi-label">Tỷ Lệ Bán</div><div class="kpi-sub">3 dự án < 95%</div></div>
+    </div>
+    <div class="chart-grid"><div class="chart-card alert-card">
+        <h4>🚨 DỰ ÁN CẦN ƯU TIÊN XỬ LÝ</h4>
+        <div class="alert-item"><span><strong>Tam Phước - ĐN:</strong> Bán: 59.9% | GT tồn: <span style="color:#ea580c">244.4 Tỷ</span></span><span class="badge badge-danger">Khẩn cấp</span></div>
+        <div class="alert-item"><span><strong>Phước Tân - ĐN:</strong> Bán: 80.9% | GT tồn: <span style="color:#ea580c">105.6 Tỷ</span></span><span class="badge badge-warning">Cần xử lý</span></div>
+        <div class="alert-item"><span><strong>Richland Residence:</strong> Bán: 92.8% | GT tồn: <span style="color:#ea580c">153.5 Tỷ</span></span><span class="badge badge-warning">Cần xử lý</span></div>
+    </div></div>
+    <div class="chart-grid">
+        <div class="chart-card"><h3>" Phân Loại Tồn Kho</h3><canvas id="inventoryTypeChart"></canvas></div>
+        <div class="chart-card"><h3>" Phân Bố Trạng Thái</h3><canvas id="statusChart"></canvas></div>
+    </div>
+    <div class="chart-grid">
+        <div class="chart-card"><h3>" Phân Bố Theo Vùng Miền</h3><canvas id="regionChart"></canvas></div>
+        <div class="chart-card"><h3>" Giá Trị Tồn Theo Vùng</h3><canvas id="regionValueChart"></canvas></div>
+    </div>
+    <div class="chart-grid"><div class="chart-card wide-chart"><h3>" Tốc Độ Bán Hàng Theo Dự Án (%]</h3><canvas id="salesVelocityChart"></canvas></div></div>
+    <div class="chart-grid"><div class="chart-card wide-chart"><h3>" Top 10 Giá Trị Tồn Kho (Tỷ VND)</h3><canvas id="topProjectsChart"></canvas></div></div>
+    <div class="table-card"><h3>" Chi Tiết Dự Án (23 dự án)</h3><div class="scroll-table"><div class="table-wrapper">
+        <table id="projectTable"><thead><tr><th>STT</th><th>Dự Án</th><th>Vùng</th><th>Tổng SP</th><th>Đã Bán</th><th>Tồn</th><th>Tỷ Lệ</th><th>Giá Trị</th><th>Trạng Thái</th><th>Ghi Chú</th></tr></thead><tbody></tbody></table>
+    </div></div></div>
+</div>
+<footer>Dashboard KIM OANH GROUP - 2026 (Warm Analytics Theme)</footer>
+    <script src="data.js"></script>
+    <script>
+const C = { orange:'rgba(249,115,22,.8)', warmRed:'rgba(234,88,12,.8)', amber:'rgba(251,191,36,.8)', brightOrange:'rgba(251,146,60,.8)', beige:'rgba(255,237,213,.8)', darkOrange:'rgba(154,52,18,.8)', green:'rgba(52,211,153,.8)', red:'rgba(239,68,68,.8)' };
+Chart.defaults.color='#7c2d12';Chart.defaults.borderColor='rgba(249,115,22,.1)';Chart.defaults.font.family="'Inter','Segoe UI',Arial,sans-serif";
+new Chart(document.getElementById('inventoryTypeChart'),{type:'doughnut',data:{labels:['SP điều chỉnh QH','SP Sếp giữ/bị khóa','SP bình thường'],datasets:[{data:[383,383,167],backgroundColor:[C.red,C.amber,C.green],borderWidth:2,borderColor:'#fff7ed'}]},options:{plugins:{legend:{position:'bottom'}}}});
+new Chart(document.getElementById('statusChart'),{type:'doughnut',data:{labels:['Bị khóa/Không KD','Đang KD','Đã bán hết','Ngưng môi giới'],datasets:[{data:[10,9,5,2],backgroundColor:[C.amber,C.green,C.orange,C.red],borderWidth:2,borderColor:'#fff7ed'}]},options:{plugins:{legend:{position:'bottom'}}}});
+new Chart(document.getElementById('regionChart'),{type:'bar',data:{labels:['Đồng Nai','Bình Dương','TP.HCM','Khác'],datasets:[{label:'Tổng SP',data:[7467,6687,431,2475],backgroundColor:C.orange},{label:'Đã bán',data:[6798,6591,425,2313],backgroundColor:C.green},{label:'Tồn kho',data:[669,191,6,67],backgroundColor:C.amber}]},options:{scales:{y:{stacked:false,beginAtZero:true},x:{stacked:false}},plugins:{legend:{position:'top'}}}});
+new Chart(document.getElementById('regionValueChart'),{type:'bar',data:{labels:['Đồng Nai','Bình Dương','TP.HCM','Khác'],datasets:[{label:'Giá trị tồn (Tỷ)',data:[797.8,185.1,10.6,185.5],backgroundColor:[C.warmRed,C.orange,C.amber,C.green],borderWidth:2,borderColor:'#fff7ed'}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'rgba(249,115,22,.1)'},ticks:{callback:function(v){return v+' Tỷ'}}},y:{grid:{color:'rgba(249,115,22,.1)'}}}}});
+new Chart(document.getElementById('salesVelocityChart'),{type:'bar',data:{labels:['An Điền','Royal Town','Nhà H2-MP3','Hòa Lợi','Siêu Thị TB','MP4A','MP4B','Kim Oanh','Phú Hội','Cầu Đò','Metro','Legacy','Newland','NXH Cầu Đò','Bửu Hòa','Tân Hạnh','Richland','Trường Lưu','Phước Tân','Tam Phước'],datasets:[{label:'Tỷ lệ bán (%)',data:[100,100,100,100,99.6,96.1,96.3,96.4,96.1,99.4,99.6,99.5,98.8,98.2,94,93.8,92.8,98.6,80.9,59.9],backgroundColor:function(ctx){return ctx.raw>=95?C.green:ctx.raw>=80?C.amber:C.red},borderWidth:1,borderColor:'#fff7ed'}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{min:0,max:105,grid:{color:'rgba(249,115,22,.1)'},ticks:{callback:function(v){return v+'%'}}},y:{grid:{color:'rgba(249,115,22,.1)'}}}}});
+new Chart(document.getElementById('topProjectsChart'),{type:'bar',data:{labels:['Tam Phước','KDC Kim Oanh','Richland','Phú Hội','MP4B','MP4A','Phước Tân','Bửu Hòa','Bàu Xéo','Cầu Đò'],datasets:[{label:'Giá trị tồn (Tỷ VND)',data:[244.4,221.3,153.5,137.5,112.7,23.1,105.6,44.3,31.1,24],backgroundColor:C.warmRed,borderWidth:1,borderColor:'#fff7ed'}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'rgba(249,115,22,.1)'},ticks:{callback:function(v){return v+' Tỷ'}}},y:{grid:{color:'rgba(249,115,22,.1)'}}}}});
+    </script>
+</body>
+</html>
