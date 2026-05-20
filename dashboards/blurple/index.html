@@ -88,9 +88,24 @@
     </div>
 </div>
 
-<script src="../enhanced-data.js"></script>
+<script src="https://hoangnvkog.github.io/inventory-dashboard-2025/dashboards/enhanced-data.js"></script>
 <script>
+console.log('[DEBUG] Starting dashboard load...');
 const THEME = 'blurple';
+
+// Check if data loaded
+if (typeof ENHANCED_DATA !== 'undefined') {
+    console.log('[DEBUG] ENHANCED_DATA loaded, count:', ENHANCED_DATA.length);
+} else {
+    console.error('[DEBUG] ENHANCED_DATA not found!');
+}
+
+// Check if EnhancedCharts loaded
+if (typeof EnhancedCharts !== 'undefined') {
+    console.log('[DEBUG] EnhancedCharts loaded');
+} else {
+    console.error('[DEBUG] EnhancedCharts not found!');
+}
 
 // Populate table
 const tbody = document.getElementById('tableBody');
@@ -103,16 +118,48 @@ ENHANCED_DATA.forEach((d,i) => {
 
 // Render charts
 window.addEventListener('load', function() {
-    EnhancedCharts.renderPie1(document.getElementById('pie1').getContext('2d'), THEME);
-    EnhancedCharts.renderStackedBar2(document.getElementById('bar2').getContext('2d'), THEME);
-    EnhancedCharts.renderHeatmap3(document.getElementById('heat3'), THEME);
-    EnhancedCharts.renderDistrict4(document.getElementById('dist4').getContext('2d'), THEME);
-    EnhancedCharts.renderClearance5(document.getElementById('line5').getContext('2d'), THEME);
-    EnhancedCharts.renderNotes6(document.getElementById('bar6').getContext('2d'), THEME);
-    EnhancedCharts.renderGauge7(document.getElementById('gauge7').getContext('2d'), THEME);
-    EnhancedCharts.renderRadar8(document.getElementById('radar8').getContext('2d'), THEME);
-    EnhancedCharts.renderScatter9(document.getElementById('scatter9').getContext('2d'), THEME);
-    EnhancedCharts.renderAvgValue10(document.getElementById('bar10').getContext('2d'), THEME);
+    console.log('[DEBUG] Window loaded, rendering charts...');
+    try {
+        EnhancedCharts.renderPie1(document.getElementById('pie1').getContext('2d'), THEME);
+        console.log('[DEBUG] Chart 1 rendered');
+    } catch(e) { console.error('[DEBUG] Chart 1 error:', e); }
+    try {
+        EnhancedCharts.renderStackedBar2(document.getElementById('bar2').getContext('2d'), THEME);
+        console.log('[DEBUG] Chart 2 rendered');
+    } catch(e) { console.error('[DEBUG] Chart 2 error:', e); }
+    try {
+        EnhancedCharts.renderHeatmap3(document.getElementById('heat3'), THEME);
+        console.log('[DEBUG] Heatmap rendered');
+    } catch(e) { console.error('[DEBUG] Heatmap error:', e); }
+    try {
+        EnhancedCharts.renderDistrict4(document.getElementById('dist4').getContext('2d'), THEME);
+        console.log('[DEBUG] Chart 4 rendered');
+    } catch(e) { console.error('[DEBUG] Chart 4 error:', e); }
+    try {
+        EnhancedCharts.renderClearance5(document.getElementById('line5').getContext('2d'), THEME);
+        console.log('[DEBUG] Chart 5 rendered');
+    } catch(e) { console.error('[DEBUG] Chart 5 error:', e); }
+    try {
+        EnhancedCharts.renderNotes6(document.getElementById('bar6').getContext('2d'), THEME);
+        console.log('[DEBUG] Chart 6 rendered');
+    } catch(e) { console.error('[DEBUG] Chart 6 error:', e); }
+    try {
+        EnhancedCharts.renderGauge7(document.getElementById('gauge7').getContext('2d'), THEME);
+        console.log('[DEBUG] Chart 7 rendered');
+    } catch(e) { console.error('[DEBUG] Chart 7 error:', e); }
+    try {
+        EnhancedCharts.renderRadar8(document.getElementById('radar8').getContext('2d'), THEME);
+        console.log('[DEBUG] Chart 8 rendered');
+    } catch(e) { console.error('[DEBUG] Chart 8 error:', e); }
+    try {
+        EnhancedCharts.renderScatter9(document.getElementById('scatter9').getContext('2d'), THEME);
+        console.log('[DEBUG] Chart 9 rendered');
+    } catch(e) { console.error('[DEBUG] Chart 9 error:', e); }
+    try {
+        EnhancedCharts.renderAvgValue10(document.getElementById('bar10').getContext('2d'), THEME);
+        console.log('[DEBUG] Chart 10 rendered');
+    } catch(e) { console.error('[DEBUG] Chart 10 error:', e); }
+    console.log('[DEBUG] All charts attempted');
 });
 </script>
 <footer>Dashboard KIM OANH GROUP - 2026 (BLURPLE Enhanced)</footer>
