@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard WARM ANALYTICS Enhanced - Kim Oanh Group</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
@@ -59,7 +60,7 @@
         <div class="chart-grid">
             <div class="chart-card"><h3>💰 Rổ hàng KD vs SP Giữ lại</h3><canvas id="pie1"></canvas></div>
             <div class="chart-card"><h3>📊 Phân bố SP tồn theo loại</h3><canvas id="bar2"></canvas></div>
-            <div class="chart-card"><h3>⚠️ Heatmap Mức độ rủi ro</h3><canvas id="heat3"></canvas></div>
+            <div class="chart-card"><h3>⚠️ Heatmap Mức độ rủi ro</h3><div id="heat3" style="width:100%;height:300px"></div></div>
             <div class="chart-card"><h3>🗺️ Phân tích theo khu vực</h3><canvas id="dist4"></canvas></div>
         </div>
         <div class="chart-grid">
@@ -89,7 +90,7 @@
 
 <script src="../enhanced-data.js"></script>
 <script>
-const THEME = 'warm-analytics';
+const THEME = 'warm';
 
 // Populate table
 const tbody = document.getElementById('tableBody');
@@ -104,7 +105,7 @@ ENHANCED_DATA.forEach((d,i) => {
 window.addEventListener('load', function() {
     EnhancedCharts.renderPie1(document.getElementById('pie1').getContext('2d'), THEME);
     EnhancedCharts.renderStackedBar2(document.getElementById('bar2').getContext('2d'), THEME);
-    EnhancedCharts.renderHeatmap3(document.getElementById('heat3').getContext('2d'), THEME);
+    EnhancedCharts.renderHeatmap3(document.getElementById('heat3'), THEME);
     EnhancedCharts.renderDistrict4(document.getElementById('dist4').getContext('2d'), THEME);
     EnhancedCharts.renderClearance5(document.getElementById('line5').getContext('2d'), THEME);
     EnhancedCharts.renderNotes6(document.getElementById('bar6').getContext('2d'), THEME);

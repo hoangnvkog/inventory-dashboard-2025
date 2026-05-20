@@ -44,23 +44,72 @@ function renderStackedBar2(ctx, theme) {
   return new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Điều chỉnh QH',data:ENHANCED_DATA.map(d=>d.SP_điều_chỉnh_QH),backgroundColor:c[0]},{label:'Sếp giữ',data:ENHANCED_DATA.map(d=>d.SP_Sếp_giữ),backgroundColor:c[1]},{label:'Bình thường',data:ENHANCED_DATA.map(d=>d.SP_bình_thường),backgroundColor:c[2]}]},options:{scales:{x:{stacked:true,grid:{color:'rgba(255,255,255,0.05)'}},y:{stacked:true,grid:{color:'rgba(255,255,255,0.05)'}}},plugins:{title:{display:true,text:'Phân bố SP tồn theo loại',color:'#fff',font:{size:13}}}}});
 }
 
-// ============ CHART 3: Heatmap Rủi ro ============
+// ============ CHART 3: Heatmap Rủi ro (Plotly.js) ============
 function renderHeatmap3(ctx, theme) {
+  const divId = ctx.canvas ? ctx.canvas.id : ctx.id;
+  const projects = ENHANCED_DATA.map(d => d.Dự_án.split('\n')[0].substring(0,18));
+  const metrics = ['Tồn kho', 'Giá trị', 'Tỷ lệ bán', 'Rủi ro'];
+  
+  // Calculate metrics matrix
   const maxGT = Math.max(...ENHANCED_DATA.map(d=>d.TỔNG_CỘNG),1);
-  const labels = ENHANCED_DATA.map(d => d.Dự_án.split('\n')[0].substring(0,15));
-  const risk = ENHANCED_DATA.map(d => {
+  const maxTon = Math.max(...ENHANCED_DATA.map(d=>d.Tổng_SP_tồn),1);
+  const zValues = metrics.map(() => []);
+  
+  ENHANCED_DATA.forEach(d => {
     const tyLeBan = d.Đã_bán / d.Tổng_SP * 100;
     const gtTon = d.Tổng_SP_tồn > 0 ? d.TỔNG_CỘNG / d.Tổng_SP_tồn : 0;
-    return ((1 - tyLeBan/100) * (gtTon / maxGT) * 100); // 0-100 scale
+    const risk = ((1 - tyLeBan/100) * (gtTon / maxGT) * 100);
+    
+    zValues[0].push(d.Tổng_SP_tồn / maxTon * 100); // Tồn kho (normalized)
+    zValues[1].push(d.TỔNG_CỘNG / maxGT * 100);   // Giá trị (normalized)
+    zValues[2].push(tyLeBan);                       // Tỷ lệ bán (%)
+    zValues[3].push(risk);                         // Rủi ro (%)
   });
-  const bg = risk.map(r => {
-    if (r > 50) return 'rgba(239,68,68,0.7)';
-    if (r > 25) return 'rgba(251,191,36,0.7)';
-    return 'rgba(52,211,153,0.7)';
-  });
-  return new Chart(ctx,{type:'bar',data:{labels,datasets:[{data:risk.map(r=>5),backgroundColor:bg,borderWidth:0}]},options:{scales:{x:{display:false},y:{display:false}},plugins:{title:{display:true,text:'Heatmap Mức độ rủi ro',color:'#fff',font:{size:13}},tooltip:{callbacks:{label:(c)=>{const i=c.dataIndex;return `${labels[i]}: Rủi ro ${risk[i].toFixed(1)}%`}}}}}},
-  });
-n}
+  
+  // Theme colors
+  const themeColors = {
+    'blurple':    { low: '#312e81', mid: '#6366f1', high: '#a5b4fc', bg: '#1e1b4b', text: '#818cf8' },
+    'cyberpunk':  { low: '#0e7490', mid: '#22d3ee', high: '#a5f3fc', bg: '#083344', text: '#22d3ee' },
+    'warm':       { low: '#7c2d12', mid: '#f97316', high: '#fdba74', bg: '#431407', text: '#f97316' },
+    'emerald':    { low: '#064e3b', mid: '#22c55e', high: '#86efac', bg: '#022c22', text: '#22c55e' },
+    'monochrome': { low: '#0f172a', mid: '#94a3b8', high: '#f1f5f9', bg: '#020617', text: '#e2e8f0' }
+  };
+  const tc = themeColors[theme] || themeColors['blurple'];
+  
+  const data = [{
+    z: zValues,
+    x: projects,
+    y: metrics,
+    type: 'heatmap',
+    colorscale: [
+      [0, tc.low],
+      [0.5, tc.mid],
+      [1, tc.high]
+    ],
+    showscale: true,
+    hoverongaps: false,
+    hovertemplate: '<b>%{y}</b><br>%{x}<br>Giá trị: %{z:.1f}<extra></extra>'
+  }];
+  
+  const layout = {
+    title: { text: '⚠️ Heatmap Mức độ rủi ro', font: { size: 14, color: tc.text } },
+    paper_bgcolor: 'transparent',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    margin: { l: 80, r: 30, t: 50, b: 80 },
+    xaxis: { 
+      tickangle: -45, 
+      tickfont: { size: 9, color: '#94a3b8' },
+      gridcolor: 'rgba(255,255,255,0.05)'
+    },
+    yaxis: { 
+      tickfont: { size: 11, color: '#94a3b8' },
+      gridcolor: 'rgba(255,255,255,0.05)'
+    },
+    font: { family: 'Inter, sans-serif' }
+  };
+  
+  Plotly.newPlot(divId, data, layout, { responsive: true, displayModeBar: false });
+}
 
 // ============ CHART 4: Phân tích theo khu vực ============
 function renderDistrict4(ctx, theme) {
