@@ -46,7 +46,9 @@ function renderStackedBar2(ctx, theme) {
 
 // ============ CHART 3: Heatmap Rủi ro (Plotly.js) ============
 function renderHeatmap3(ctx, theme) {
-  const divId = ctx.canvas ? ctx.canvas.id : ctx.id;
+  // ctx is now the DIV element directly
+  const element = (typeof ctx === 'string') ? document.getElementById(ctx) : ctx;
+  if (!element) { console.error('Heatmap div not found:', ctx); return; }
   const projects = ENHANCED_DATA.map(d => d.Dự_án.split('\n')[0].substring(0,18));
   const metrics = ['Tồn kho', 'Giá trị', 'Tỷ lệ bán', 'Rủi ro'];
   
@@ -108,7 +110,7 @@ function renderHeatmap3(ctx, theme) {
     font: { family: 'Inter, sans-serif' }
   };
   
-  Plotly.newPlot(divId, data, layout, { responsive: true, displayModeBar: false });
+  Plotly.newPlot(element, data, layout, { responsive: true, displayModeBar: false });
 }
 
 // ============ CHART 4: Phân tích theo khu vực ============
