@@ -45,69 +45,56 @@ function renderStackedBar2(ctx, theme) {
 }
 
 // ============ CHART 3: Heatmap Rủi ro (Plotly.js) ============
+// ============ CHART 3: Heatmap Rủi ro (Plotly.js) ============
 function renderHeatmap3(ctx, theme) {
-  // ctx is now the DIV element directly
-  const element = (typeof ctx === 'string') ? document.getElementById(ctx) : ctx;
+  var element = (typeof ctx === 'string') ? document.getElementById(ctx) : ctx;
   if (!element) { console.error('Heatmap div not found:', ctx); return; }
-  const projects = ENHANCED_DATA.map(d => d.Dự_án.split('\n')[0].substring(0,18));
-  const metrics = ['Tồn kho', 'Giá trị', 'Tỷ lệ bán', 'Rủi ro'];
   
-  // Calculate metrics matrix
-  const maxGT = Math.max(...ENHANCED_DATA.map(d=>d.TỔNG_CỘNG),1);
-  const maxTon = Math.max(...ENHANCED_DATA.map(d=>d.Tổng_SP_tồn),1);
-  const zValues = metrics.map(() => []);
+  var projects = ENHANCED_DATA.map(function(d) { return d.Dự_án.split('\n')[0].substring(0,18); });
+  var metrics = ['Tồn kho', 'Giá trị', 'Tỷ lệ bán', 'Rủi ro'];
   
-  ENHANCED_DATA.forEach(d => {
-    const tyLeBan = d.Đã_bán / d.Tổng_SP * 100;
-    const gtTon = d.Tổng_SP_tồn > 0 ? d.TỔNG_CỘNG / d.Tổng_SP_tồn : 0;
-    const risk = ((1 - tyLeBan/100) * (gtTon / maxGT) * 100);
-    
-    zValues[0].push(d.Tổng_SP_tồn / maxTon * 100); // Tồn kho (normalized)
-    zValues[1].push(d.TỔNG_CỘNG / maxGT * 100);   // Giá trị (normalized)
-    zValues[2].push(tyLeBan);                       // Tỷ lệ bán (%)
-    zValues[3].push(risk);                         // Rủi ro (%)
-  });
+  var maxGT = Math.max.apply(null, ENHANCED_DATA.map(function(d) { return d.TỔNG_CỘNG; }));
+  if (maxGT === 0) maxGT = 1;
+  var maxTon = Math.max.apply(null, ENHANCED_DATA.map(function(d) { return d.Tổng_SP_tồn; }));
+  if (maxTon === 0) maxTon = 1;
   
-  // Theme colors
-  const themeColors = {
-    'blurple':    { low: '#312e81', mid: '#6366f1', high: '#a5b4fc', bg: '#1e1b4b', text: '#818cf8' },
-    'cyberpunk':  { low: '#0e7490', mid: '#22d3ee', high: '#a5f3fc', bg: '#083344', text: '#22d3ee' },
-    'warm':       { low: '#7c2d12', mid: '#f97316', high: '#fdba74', bg: '#431407', text: '#f97316' },
-    'emerald':    { low: '#064e3b', mid: '#22c55e', high: '#86efac', bg: '#022c22', text: '#22c55e' },
-    'monochrome': { low: '#0f172a', mid: '#94a3b8', high: '#f1f5f9', bg: '#020617', text: '#e2e8f0' }
+  var zValues = [
+    ENHANCED_DATA.map(function(d) { return d.Tổng_SP_tồn / maxTon * 100; }),
+    ENHANCED_DATA.map(function(d) { return d.TỔNG_CỘNG / maxGT * 100; }),
+    ENHANCED_DATA.map(function(d) { return (d.Đã_bán / d.Tổng_SP) * 100; }),
+    ENHANCED_DATA.map(function(d) {
+      var tyLeBan = d.Đã_bán / d.Tổng_SP * 100;
+      var gtTon = d.Tổng_SP_tồn > 0 ? d.TỔNG_CỘNG / d.Tổng_SP_tồn : 0;
+      return ((100 - tyLeBan) * (gtTon / maxGT) * 100);
+    })
+  ];
+  
+  var themeColors = {
+    'blurple':    { low: '#312e81', mid: '#6366f1', high: '#a5b4fc' },
+    'cyberpunk':  { low: '#0e7490', mid: '#22d3ee', high: '#a5f3fc' },
+    'warm':       { low: '#7c2d12', mid: '#f97316', high: '#fdba74' },
+    'emerald':    { low: '#064e3b', mid: '#22c55e', high: '#86efac' },
+    'monochrome': { low: '#0f172a', mid: '#94a3b8', high: '#f1f5f9' }
   };
-  const tc = themeColors[theme] || themeColors['blurple'];
+  var tc = themeColors[theme] || themeColors['blurple'];
   
-  const data = [{
+  var data = [{
     z: zValues,
     x: projects,
     y: metrics,
     type: 'heatmap',
-    colorscale: [
-      [0, tc.low],
-      [0.5, tc.mid],
-      [1, tc.high]
-    ],
+    colorscale: [[0, tc.low], [0.5, tc.mid], [1, tc.high]],
     showscale: true,
-    hoverongaps: false,
-    hovertemplate: '<b>%{y}</b><br>%{x}<br>Giá trị: %{z:.1f}<extra></extra>'
+    hoverongaps: false
   }];
   
-  const layout = {
-    title: { text: '⚠️ Heatmap Mức độ rủi ro', font: { size: 14, color: tc.text } },
+  var layout = {
+    title: { text: '⚠️ Heatmap Mức độ rủi ro', font: { size: 14, color: '#94a3b8' } },
     paper_bgcolor: 'transparent',
-    plot_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'transparent',
     margin: { l: 80, r: 30, t: 50, b: 80 },
-    xaxis: { 
-      tickangle: -45, 
-      tickfont: { size: 9, color: '#94a3b8' },
-      gridcolor: 'rgba(255,255,255,0.05)'
-    },
-    yaxis: { 
-      tickfont: { size: 11, color: '#94a3b8' },
-      gridcolor: 'rgba(255,255,255,0.05)'
-    },
-    font: { family: 'Inter, sans-serif' }
+    xaxis: { tickangle: -45, tickfont: { size: 9, color: '#94a3b8' } },
+    yaxis: { tickfont: { size: 11, color: '#94a3b8' } }
   };
   
   Plotly.newPlot(element, data, layout, { responsive: true, displayModeBar: false });
@@ -116,20 +103,45 @@ function renderHeatmap3(ctx, theme) {
 // ============ CHART 4: Phân tích theo khu vực ============
 function renderDistrict4(ctx, theme) {
   const districts = {};
-  ENHANCED_DATA.forEach(d => {
+  ENHANCED_DATA.forEach(function(d) {
     const name = d.Dự_án.toUpperCase();
     let dist = 'Khác';
     if (name.includes('QUẬN 9')) dist = 'Quận 9, TP.HCM';
     else if (name.includes('ĐỒNG NAI')) dist = 'Đồng Nai';
     else if (name.includes('BÌNH DƯƠNG')) dist = 'Bình Dương';
     else if (name.includes('TP.HCM')) dist = 'TP.HCM (khác)';
-    if (!districts[dist]) districts[dist] = {sp:0,gt:0};
+    if (!districts[dist]) districts[dist] = {sp:0, gt:0};
     districts[dist].sp += d.Tổng_SP_tồn;
     districts[dist].gt += d.TỔNG_CỘNG;
   });
   const labels = Object.keys(districts);
   const c = theme === 'warm' ? '#f97316' : theme === 'emerald' ? '#22c55e' : theme === 'cyberpunk' ? '#22d3ee' : theme === 'monochrome' ? '#e2e8f0' : '#818cf8';
-  return new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Số SP tồn',data:labels.map(l=>districts[l].sp),backgroundColor:c}]},options:{indexAxis:'y',plugins:{title:{display:true,text:'Phân tích theo khu vực',color:'#fff',font:{size:13}}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'}},y:{grid:{display:false}}}});
+  return new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Số SP tồn',
+        data: labels.map(function(l) { return districts[l].sp; }),
+        backgroundColor: c
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      plugins: {
+        title: {
+          display: true,
+          text: 'Phân tích theo khu vực',
+          color: '#fff',
+          font: { size: 13 }
+        }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
 }
 
 // ============ CHART 5: Tốc độ thanh lý ============
